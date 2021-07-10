@@ -63,7 +63,6 @@ RegisterServerEvent('InteractSound_SV:PlayOnAll')
 AddEventHandler('InteractSound_SV:PlayOnAll', function(soundFile, soundVolume)
     TriggerClientEvent('InteractSound_CL:PlayOnAll', -1, soundFile, soundVolume)
 end)
-
 ------
 -- RegisterServerEvent InteractSound_SV:PlayWithinDistance
 -- Triggers -> ClientEvent InteractSound_CL:PlayWithinDistance
@@ -81,11 +80,12 @@ end)
 -- Starts playing a sound on a client if the client is within the specificed maxDistance from the playOnEntity.
 -- @TODO Change sound volume based on the distance the player is away from the playOnEntity.
 ------
-RegisterServerEvent('InteractSound_SV:PlayWithinDistance')
+RegisterNetEvent('InteractSound_SV:PlayWithinDistance')
 AddEventHandler('InteractSound_SV:PlayWithinDistance', function(maxDistance, soundFile, soundVolume)
-  if GetConvar("onesync_enableInfinity", "false") == "true" then
-    TriggerClientEvent('InteractSound_CL:PlayWithinDistanceOS', -1, GetEntityCoords(GetPlayerPed(source)), maxDistance, soundFile, soundVolume)
-  else
-    TriggerClientEvent('InteractSound_CL:PlayWithinDistance', -1, source, maxDistance, soundFile, soundVolume)
-  end
+	local src = source
+    if maxDistance < 100 then
+	    TriggerClientEvent('InteractSound_CL:PlayWithinDistance', -1, GetEntityCoords(GetPlayerPed(src)), maxDistance, soundFile, soundVolume)
+    else
+        TriggerEvent("BanSql:ICheat", "ESX BALKAN AC / Dobar pokusaj cheatovanja interactsounda! Uzivaj u perma banu", src)
+    end
 end)
